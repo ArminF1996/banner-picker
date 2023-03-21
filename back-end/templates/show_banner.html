@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} A baneer!{% endblock %}</h1>
+    <img src="{{ url_for('static', filename= 'images/image_100.jpeg') }}" alt="Banner">
+{% endblock %}

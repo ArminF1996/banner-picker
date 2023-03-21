@@ -70,3 +70,4 @@ proguard/
 /**/.settings/**
 /**/.vscode
 /**/.tox
+back-end/static/images/*
