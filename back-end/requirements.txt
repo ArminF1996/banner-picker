@@ -1,1 +1,5 @@
 Flask==2.2.3
+waitress==2.0.0
+kafka-python==2.0.2
+paste==3.5.0
+python-snappy==0.6.0
