@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} A baneer!{% endblock %}</h1>
-    <img src="{{ url_for('static', filename= 'images/image_100.jpeg') }}" alt="Banner">
+    <h1>{% block title %} I wanna show you a banner!{% endblock %}</h1><br>
+    {% if image_path %}
+        <img src="{{ url_for('static', filename=image_path) }}" alt="Banner">
+    {% else %}
+        <form method="POST" action="" enctype="multipart/form-data">
+            <h2><p>Enter your username</p></h2>
+        <p><input type="text" name="username"></p>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+    {% endif %}
 {% endblock %}
