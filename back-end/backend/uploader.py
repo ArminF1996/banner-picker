@@ -26,7 +26,6 @@ def upload_csv():
             return redirect(request.url)
         if file:
             file_name = ''.join(random.choices(string.ascii_lowercase, k=15)) + str(int(time.time()))
-
             try:
                 key = configs.LOGS_PATH_PREFIX + file_name + "_" + request.values['csv-type'] \
                       + "_" + request.values['quarter']

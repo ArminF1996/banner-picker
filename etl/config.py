@@ -41,8 +41,6 @@ def get_config(config_path):
     config_ini.optionxform = str  # Makes the key value case-insensitive
     config_ini.read(config_path)
     config = Config()
-    for k, v in config_ini.items("db"):
-        setattr(config, k, process_string_var(v))
     for k, v in config_ini.items("extra"):
         setattr(config, k, process_string_var(v))
     logging.basicConfig(level=config.LOG_LEVEL, format='%(asctime)s %(name)s %(levelname)s: %(message)s')

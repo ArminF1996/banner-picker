@@ -4,12 +4,16 @@ WORKDIR /opt
 
 RUN python -m venv develop-env
 RUN develop-env/bin/pip install pip --upgrade
-COPY setup.py .
-RUN develop-env/bin/pip install .
 
-COPY *.py ./
+COPY requirements.txt .
+RUN develop-env/bin/pip install -r requirements.txt
+
+COPY static/ static/
+COPY templates/ templates/
+
 COPY develop.ini .
-COPY etl/ etl/
+COPY *.py ./
+COPY backend/ backend/
 
 ENTRYPOINT ["develop-env/bin/python", "run.py"]
 CMD ["develop.ini"]

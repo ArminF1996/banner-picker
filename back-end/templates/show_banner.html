@@ -6,9 +6,10 @@
         <img src="{{ url_for('static', filename=image_path) }}" alt="Banner">
     {% else %}
         <form method="POST" action="" enctype="multipart/form-data">
-            <h2><p>Enter your username</p></h2>
-        <p><input type="text" name="username"></p>
-        <p><input type="submit" value="Submit"></p>
+            <h2><p>Enter your username and a campaign_id.</p></h2>
+            <p><input type="text" name="username" required>username</p>
+            <p><input type="number" name="campaign_id" required>campaign_id</p>
+            <p><input type="submit" value="Submit"></p>
     </form>
     {% endif %}
 {% endblock %}

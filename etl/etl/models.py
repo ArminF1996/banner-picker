@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Float, Column, Index, create_engine
+from sqlalchemy import Integer, Float, Column, Index, create_engine, func
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from io import StringIO
 import csv
@@ -23,16 +23,6 @@ class Impression(Base):
     total_clicks = Column(Integer, default=0)
     total_revenue = Column(Float, default=0.0)
     __table_args__ = (Index('impression_index', "quarter", "campaign_id", "banner_id"),)
-
-    def to_dict(self):
-        return {
-            'impression_id': self.impression_id,
-            'campaign_id': self.campaign_id,
-            'banner_id': self.banner_id,
-            'total_clicks': self.total_clicks,
-            'total_revenue': self.total_revenue,
-            'quarter': self.quarter
-        }
 
     def __repr__(self) -> str:
         return f"Impression(Impression_id={self.impression_id!r}, quarter={self.quarter!r}, " \
@@ -83,14 +73,6 @@ class Click(Base):
     campaign_id = Column(Integer, nullable=False)
     banner_id = Column(Integer, nullable=False)
     quarter = Column(Integer, nullable=False)
-
-    def to_dict(self):
-        return {
-            'click_id': self.click_id,
-            'campaign_id': self.campaign_id,
-            'banner_id': self.banner_id,
-            'quarter': self.quarter
-        }
 
     def __repr__(self) -> str:
         return f"Click(click_id={self.click_id!r}, campaign_id={self.campaign_id!r}, banner_id={self.banner_id!r}, " \
@@ -170,14 +152,6 @@ class Conversion(Base):
     revenue = Column(Float, default=0.0)
     quarter = Column(Integer, nullable=False)
 
-    def to_dict(self):
-        return {
-            'conversion_id': self.conversion_id,
-            'click_id': self.click_id,
-            'revenue': self.revenue,
-            'quarter': self.quarter
-        }
-
     def __repr__(self) -> str:
         return f"Conversion(conversion_id={self.conversion_id!r}, click_id={self.click_id!r}, " \
                f"revenue={self.revenue!r}, quarter={self.quarter!r})"
@@ -256,14 +230,48 @@ class Revision(Base):
     id = Column(Integer, nullable=False, primary_key=True)
     revision = Column(Integer, nullable=False)
 
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'revision': self.revision
-        }
-
     def __repr__(self) -> str:
         return f"Revision(id={self.id!r}, revision={self.revision!r})"
+
+
+def get_data_revision():
+    with Session() as session:
+        revision = session.query(Revision).first()
+        return revision.revision
+
+
+def get_tops_by_revenue(quarter, campaign_id):
+    with Session() as session:
+        tops = session.query(Impression.banner_id, Impression.total_revenue)\
+            .filter_by(quarter=quarter, campaign_id=campaign_id)\
+            .order_by(Impression.total_revenue.desc()).limit(10).all()
+
+        tops_with_conversion = []
+        for row in tops:
+            if float(row[1]) > 0.0:
+                tops_with_conversion.append(row[0])
+        return tops_with_conversion
+
+
+def get_tops_by_clicks(quarter, campaign_id):
+    with Session() as session:
+        tops = session.query(Impression.banner_id, Impression.total_clicks)\
+            .filter_by(quarter=quarter, campaign_id=campaign_id)\
+            .order_by(Impression.total_clicks.desc()).limit(10).all()
+
+        tops_with_click = []
+        for row in tops:
+            if int(row[1]) > 0:
+                tops_with_click.append(row[0])
+        return tops_with_click
+
+
+def get_tops_by_random(quarter, campaign_id):
+    with Session() as session:
+        tops = session.query(Impression.banner_id)\
+            .filter_by(quarter=quarter, campaign_id=campaign_id)\
+            .order_by(func.random()).limit(5).all()
+        return [row[0] for row in tops]
 
 
 def create_db_connection(configs):
