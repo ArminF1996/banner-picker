@@ -8,7 +8,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 producer = KafkaProducer(bootstrap_servers=configs.KAFKA_BOOTSTRAP_SERVERS,
-                         key_serializer=str.encode,
                          compression_type=configs.KAFKA_COMPRESSION_TYPE,
                          retries=configs.KAFKA_RETRIES)
 
@@ -31,11 +30,10 @@ def upload_csv():
             try:
                 key = configs.LOGS_PATH_PREFIX + file_name + "_" + request.values['csv-type'] \
                       + "_" + request.values['quarter']
-                print(key)
-                producer.send(configs.KAFKA_TOPIC_NAME, key=key,
+                producer.send(configs.KAFKA_TOPIC_NAME, key=str.encode(key),
                               value=file.stream.read()).get(configs.KAFKA_PRODUCE_TIMEOUT)
                 with open(configs.LOGS_PATH_PREFIX + file_name, 'w') as f:
-                    f.write('Import process for \"{}\" has not yet started!'.format(file.filename))
+                    f.write('The import process for \"{}\" has not been done yet!'.format(file.filename))
                 return redirect(url_for('uploader.import_result', log_file=file_name))
             except Exception as e:
                 logger.error("Can not produce message to kafka", e)
