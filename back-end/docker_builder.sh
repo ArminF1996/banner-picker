@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker build -t assignment/backend -f docker/Dockerfile .
+docker build -t assignment/backend -f docker/Dockerfile ../
