@@ -2,22 +2,36 @@ import requests
 import string
 import random
 import time
+from threading import Thread
 
 
-users = []
-for i in range(500):
-    users.append(''.join(random.choices(string.ascii_lowercase, k=5)))
+class StressTest:
 
-start_time = int(time.time())
+    URL = "http://0.0.0.0:25192/picker/pick/{0}/{1}"
+    users = []
+    for i in range(500):
+        users.append(''.join(random.choices(string.ascii_lowercase, k=5)))
 
-URL = "http://0.0.0.0:25192/peaker/pick/{0}/{1}"
-for i in range(5000):
-    campaign_id = random.randint(1, 50)
-    username = random.randint(0, 499)
-    r = requests.get(url=URL.format(campaign_id, username))
-    if not r.ok:
-        print(r)
+    def run(self):
+        for tmp in range(1000):
+            campaign_id = random.randint(1, 50)
+            username = random.randint(0, 499)
+            r = requests.get(url=self.URL.format(campaign_id, self.users[username]))
+            if not r.ok:
+                print(r)
 
-finish_time = int(time.time())
 
-print("Stress test finished in {} seconds".format(finish_time-start_time))
+if __name__ == "__main__":
+    my_class = StressTest()
+
+    threads = []
+
+    start_time = int(time.time())
+    for i in range(5):
+        thread = Thread(target=my_class.run())
+        threads.append(thread)
+        thread.start()
+    for thread in threads:
+        thread.join()
+    finish_time = int(time.time())
+    print("Stress test finished in {} seconds".format(finish_time - start_time))

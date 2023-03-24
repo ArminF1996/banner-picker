@@ -26,7 +26,8 @@ def pick_banner():
 def show_banner(campaign_id, username):
     data_revision = models.get_data_revision()
     if (campaign_id not in top_banners) or (top_banners[campaign_id]['revision'] != data_revision):
-        update_campaign(quarter=int(datetime.datetime.now().minute/15), campaign_id=campaign_id, data_revision=data_revision)
+        update_campaign(quarter=int(datetime.datetime.now().minute/15), campaign_id=campaign_id,
+                        data_revision=data_revision)
     last_seen = -1
     if username in users_history:
         last_seen = users_history[username]
@@ -55,6 +56,4 @@ def update_campaign(quarter, campaign_id, data_revision):
         if len(tops_by_revenue) < 5 and banner not in tops_by_revenue:
             tops_by_revenue.append(banner)
     if len(tops_by_revenue) > 0:
-        top_banners[campaign_id] = {'banners': [], 'revision': 0}
-        top_banners[campaign_id]['banners'] = tops_by_revenue
-        top_banners[campaign_id]['revision'] = data_revision
+        top_banners[campaign_id] = {'banners': tops_by_revenue, 'revision': data_revision}
