@@ -1,7 +1,8 @@
+import random
+import datetime
 from flask import Blueprint, render_template, request, redirect, url_for
 from backend import configs
 from etl import models
-import random
 from cachetools import LFUCache
 
 models.create_db_connection(configs)
@@ -25,7 +26,7 @@ def pick_banner():
 def show_banner(campaign_id, username):
     data_revision = models.get_data_revision()
     if (campaign_id not in top_banners) or (top_banners[campaign_id]['revision'] != data_revision):
-        update_campaign(quarter=0, campaign_id=campaign_id, data_revision=data_revision)
+        update_campaign(quarter=int(datetime.datetime.now().minute/15), campaign_id=campaign_id, data_revision=data_revision)
     last_seen = -1
     if username in users_history:
         last_seen = users_history[username]
