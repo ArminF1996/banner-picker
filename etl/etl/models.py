@@ -61,7 +61,7 @@ def import_impressions(logfile, data, quarter):
 
             session.bulk_save_objects(entities)
             session.commit()
-        result = "{0} from {1} rows successfully added to database.".format(total_added, cur_line)
+        result = "{0} from {1} impression rows successfully added to database.".format(total_added, cur_line)
         f.write(result + "\nThe import process has finished.\n")
         logger.info(result)
 
@@ -111,7 +111,7 @@ def import_clicks(logfile, data, quarter):
                         entities.append(Impression(quarter=quarter, campaign_id=campaign_id, banner_id=banner_id))
             session.bulk_save_objects(entities)
             session.commit()
-        result = "{0} from {1} rows successfully added to database.".format(total_added, cur_line)
+        result = "{0} from {1} click rows successfully added to database.".format(total_added, cur_line)
         f.write(result + "\nThe import process has finished.\n")
         logger.info(result)
     if total_added > 0:
@@ -188,7 +188,7 @@ def import_conversions(logfile, data, quarter):
                         new_conversions[click_id] = revenue
             session.bulk_save_objects(entities)
             session.commit()
-        result = "{0} from {1} rows successfully added to database.".format(total_added, cur_line)
+        result = "{0} from {1} conversion rows successfully added to database.".format(total_added, cur_line)
         f.write(result + "\nThe import process has finished.\n")
         logger.info(result)
     if total_added > 0:

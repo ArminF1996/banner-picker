@@ -16,6 +16,7 @@ def run(config):
                              key_deserializer=bytes.decode,
                              value_deserializer=bytes.decode,
                              auto_offset_reset=config.KAFKA_AUTO_OFFSET_RESET,
+                             session_timeout_ms=config.KAFKA_SESSION_TIMEOUT_MS,
                              enable_auto_commit=False)
     for record in consumer:
         try:
