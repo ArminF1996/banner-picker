@@ -22,11 +22,14 @@ data when we received them" but I want to change it to "update all the performan
 3. Change related `config.ini` constants as you want. 
 4. Run `python3 run.py config.ini`
 
+Or you can use provided Dockerfile
 
 ## Run ETL
 
 1. Clone the repository.
 2. Go to etl directory.
-2. Run `pip install .`.
+2. Run `pip3 install .`.
 3. Change related `config.ini` constants as you want. 
 4. Run `python3 run.py config.ini`
+
+Or you can use provided Dockerfile
