@@ -3,13 +3,13 @@ import datetime
 from flask import Blueprint, render_template, request, redirect, url_for
 from backend import configs
 from etl import models
-from cachetools import LFUCache
+from cachetools import LRUCache
 
 models.create_db_connection(configs)
 bp = Blueprint("picker", __name__)
 
-top_banners = LFUCache(maxsize=100)
-users_history = LFUCache(maxsize=1000)
+top_banners = LRUCache(maxsize=100)
+users_history = LRUCache(maxsize=1000)
 
 
 @bp.route("/pick", methods=['GET', 'POST'])
