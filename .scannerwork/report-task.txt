@@ -1,0 +1,6 @@
+projectKey=test-sonar
+serverUrl=https://blog.sotoon.online
+serverVersion=10.5.1.90531
+dashboardUrl=https://blog.sotoon.online/dashboard?id=test-sonar
+ceTaskId=f1a4e4f2-b61b-402f-a803-54e41ff1fdef
+ceTaskUrl=https://blog.sotoon.online/api/ce/task?id=f1a4e4f2-b61b-402f-a803-54e41ff1fdef
